@@ -29,7 +29,12 @@
         },
         methods: {
             submit() {
-                console.log(this.user);
+                this.$http.post('https://vuejs-http-udemy-35d4d.firebaseio.com/data.json', this.user)
+                        .then(response => {
+                            console.log(response);
+                        }, error => {
+                            console.log(error);
+                        });
             }
         }
     }
