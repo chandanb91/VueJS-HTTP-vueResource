@@ -13,6 +13,8 @@
                 </div>
                 <button class="btn btn-primary" @click="submit">Submit</button>
                 <hr>
+                <input class="form-control" type="text" v-model="node">
+                <br><br>
                 <button class="btn btn-primary" @click="fetchData">Get Data</button>
                 <hr>
                 <ul class="list-group">
@@ -34,7 +36,8 @@
                     email: ''
                 },
                 users:[],
-                resource: {}
+                resource: {},
+                node: 'data'
             };
         },
         methods: {
@@ -49,8 +52,20 @@
                 this.resource.saveAlt(this.user);
             },
             fetchData() {
-                this.$http.get('data.json')
-                        .then(response => {
+                // this.$http.get('data.json')
+                //         .then(response => {
+                //             return response.json();
+                //         })
+                //         .then(data => {
+                //             console.log(data);
+                //             const resultArray = [];
+                //             for(let key in data) {
+                //                 resultArray.push(data[key]);
+                //             }
+                //             this.users = resultArray;
+                //         });
+                this.resource.getData({node: this.node})
+                         .then(response => {
                             return response.json();
                         })
                         .then(data => {
@@ -65,9 +80,10 @@
         },
         created() {
             const customActions = {
-                saveAlt: { method: 'POST', url: 'alternative.json' }
+                saveAlt: { method: 'POST', url: 'alternative.json' },
+                getData: { method: 'GET' }
             }
-            this.resource = this.$resource('data.json', {}, customActions);
+            this.resource = this.$resource('{node}.json', {}, customActions);
         },
     }
 </script>
